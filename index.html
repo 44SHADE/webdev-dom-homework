@@ -65,7 +65,45 @@
 
   <script>
     "use strict";
-    // Код писать здесь
-    console.log("It works!");
+    const likeBtn = document.querySelector(".like-button");
+    const commentsList = document.querySelector(".comments");
+    const nameInput = document.querySelector(".add-form-name");
+    const commentArea = document.querySelector(".add-form-text");
+    const sendCommentBtn = document.querySelector(".add-form-button");
+
+    function addComment(selector) {
+      const date = new Date();
+      const dateNow = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+      const userName = nameInput.value;
+      const commentText = commentArea.value;
+      if (!userName || !commentText) {
+        alert("Поля имени и комментария должны быть заполнены.");
+        return 0;
+      }
+
+      const li = document.createElement("li");
+      li.innerHTML = `        
+      <li class="comment">
+          <div class="comment-header">
+            <div>${userName}</div>
+            <div>${dateNow}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${commentText}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>
+      `;
+      commentsList.append(li);
+    }
+
+    sendCommentBtn.addEventListener("click", addComment);
   </script>
 </html>
