@@ -71,9 +71,15 @@
     const commentArea = document.querySelector(".add-form-text");
     const sendCommentBtn = document.querySelector(".add-form-button");
 
-    function addComment(selector) {
-      const date = new Date();
-      const dateNow = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    function addComment() {
+      const date = new Date().toLocaleDateString("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const formattedDate = date.split(",").join(" ");
       const userName = nameInput.value;
       const commentText = commentArea.value;
       if (!userName || !commentText) {
