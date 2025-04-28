@@ -71,6 +71,37 @@
     const commentArea = document.querySelector(".add-form-text");
     const sendCommentBtn = document.querySelector(".add-form-button");
 
+     const listenersMap = new Map();
+
+     function addLikeListener() {
+      const likeBtns = document.querySelectorAll(".like-button");
+      // const last = likeBtns[likeBtns.length - 1];
+
+      // last.addEventListener("click", (event) => {
+      //   const targetBtn = event.target;
+      //   const likeCounter = targetBtn.previousElementSibling;
+      //   const isLiked = targetBtn.classList.toggle("-active-like");
+
+      //   isLiked ? ++likeCounter.textContent : --likeCounter.textContent;
+      // });
+
+      //MAP VER uncomment str: 73 -> listenersMap
+      [...likeBtns].map((el, index) => {
+        const item = listenersMap.has(index);
+        if (!item) {
+          el.index = index;
+          listenersMap.set(el.index, { el, index: index, event: "click" });
+
+          el.addEventListener("click", (event) => {
+            const targetBtn = event.target;
+            const likeCounter = targetBtn.previousElementSibling;
+            const isLiked = targetBtn.classList.toggle("-active-like");
+            isLiked ? ++likeCounter.textContent : --likeCounter.textContent;
+          });
+        }
+      });
+    }
+
     function addComment() {
       const date = new Date().toLocaleDateString("ru-RU", {
         day: "2-digit",
@@ -108,10 +139,12 @@
         </li>
       `;
       commentsList.append(li);
+      addLikeListener();
       nameInput.value = "";
       commentArea.value = "";
     }
 
     sendCommentBtn.addEventListener("click", addComment);
+    addLikeListener()
   </script>
 </html>
