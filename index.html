@@ -30,7 +30,7 @@
 
   <script>
     "use strict";
-    
+
     const sendCommentBtn = document.querySelector(".add-form-button");
     const commentsDataArray = [];
 
@@ -70,7 +70,7 @@
             <div class="likes">
               <span class="likes-counter">${el.count}</span>
               <button class="like-button ${
-                el.isLiked ? el.classActiveLike : null
+                el.isLiked ? "-active-like" : null
               }"></button>
             </div>
           </div>
@@ -104,7 +104,6 @@
         date: formattedDate,
         count: 0,
         isLiked: false,
-        classActiveLike: "-active-like",
       };
 
       commentsDataArray.push(commentData);
@@ -114,6 +113,6 @@
     }
 
     sendCommentBtn.addEventListener("click", addComment);
-    addLikeListener();
+    renderer(commentsDataArray)
   </script>
 </html>
