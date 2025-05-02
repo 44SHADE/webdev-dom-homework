@@ -8,42 +8,7 @@
 
   <body>
     <div class="container">
-      <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
-      </ul>
+      <ul class="comments"></ul>
       <div class="add-form">
         <input
           type="text"
@@ -65,13 +30,59 @@
 
   <script>
     "use strict";
-    const likeBtn = document.querySelector(".like-button");
-    const commentsList = document.querySelector(".comments");
-    const nameInput = document.querySelector(".add-form-name");
-    const commentArea = document.querySelector(".add-form-text");
+
     const sendCommentBtn = document.querySelector(".add-form-button");
+    const commentsDataArray = [];
+
+    function addLikeListener() {
+      const comments = document.querySelectorAll(".comment");
+      comments.forEach((el, index) => {
+        const commentData = commentsDataArray[index];
+        el.addEventListener("click", () => {
+          if(commentData.isLiked) {
+            commentData.isLiked = false;
+            commentData.count--;
+          } else {
+            commentData.isLiked = true;
+            commentData.count++;
+          }
+
+          renderer(commentsDataArray);
+        })
+      })
+    }
+
+    function renderer(commentsData) {
+      const container = document.querySelector(".comments");
+
+      container.innerHTML = commentsDataArray.map( (el, index) => 
+      ` <li class="comment" data-index=${index}>
+          <div class="comment-header">
+            <div>${el.name}</div>
+            <div>${el.date}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${el.text}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">${el.count}</span>
+              <button class="like-button ${
+                el.isLiked ? "-active-like" : null
+              }"></button>
+            </div>
+          </div>
+        </li>`
+      ).join("");
+
+      addLikeListener();
+    }
 
     function addComment() {
+      const nameInput = document.querySelector(".add-form-name");
+      const commentArea = document.querySelector(".add-form-text");
       const date = new Date().toLocaleDateString("ru-RU", {
         day: "2-digit",
         month: "2-digit",
@@ -87,31 +98,21 @@
         return 0;
       }
 
-      const li = document.createElement("li");
-      li.innerHTML = `        
-      <li class="comment">
-          <div class="comment-header">
-            <div>${userName}</div>
-            <div>${formattedDate}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${commentText}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-      `;
-      commentsList.append(li);
+      const commentData = {
+        name: userName,
+        text: commentText,
+        date: formattedDate,
+        count: 0,
+        isLiked: false,
+      };
+
+      commentsDataArray.push(commentData);
+      renderer(commentsDataArray);
       nameInput.value = "";
       commentArea.value = "";
     }
 
     sendCommentBtn.addEventListener("click", addComment);
+    renderer(commentsDataArray)
   </script>
 </html>
