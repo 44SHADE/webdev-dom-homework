@@ -1,4 +1,4 @@
-export default function xssValidate(string) {
+export function xssValidate(string) {
   return string
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

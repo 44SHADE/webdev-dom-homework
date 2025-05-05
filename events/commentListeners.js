@@ -1,4 +1,4 @@
-import xssValidate from '../utils/xssValidate.js';
+import { xssValidate } from '../utils/xssValidate.js';
 
 const nameInput = document.querySelector('.add-form-name');
 const commentArea = document.querySelector('.add-form-text');
