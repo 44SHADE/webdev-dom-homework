@@ -1,17 +1,12 @@
+import { postComment } from '../services/client-api/comments/fetchComments.js';
+import { formattingDate } from '../utils/formattingDate.js';
 import { xssValidate } from '../utils/xssValidate.js';
 
 const nameInput = document.querySelector('.add-form-name');
 const commentArea = document.querySelector('.add-form-text');
 
 export function addComment(fnRender, commentsDataArr) {
-  const date = new Date().toLocaleDateString('ru-RU', {
-    day: '2-digit',
-    month: '2-digit',
-    year: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-  const formattedDate = date.split(',').join(' ');
+  const date = formattingDate();
   const userName = xssValidate(nameInput.value);
   const commentText = xssValidate(commentArea.value);
   if (!userName || !commentText) {
@@ -22,11 +17,12 @@ export function addComment(fnRender, commentsDataArr) {
   const commentData = {
     name: userName,
     text: commentText,
-    date: formattedDate,
+    date: date,
     count: 0,
     isLiked: false,
   };
 
+  postComment(commentData);
   commentsDataArr.push(commentData);
   fnRender(commentsDataArr);
   nameInput.value = '';
