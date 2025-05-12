@@ -36,6 +36,10 @@ export function addComment(fnRender, commentsDataArr) {
     })
     .catch((reason) => {
       if (reason instanceof Error) alert(reason.message.split(':')[1]);
+      if (reason.message.includes('500')) {
+        nameInput.value = userName;
+        commentArea.value = commentText;
+      }
       changeStateFormBtn(false, 'Написать');
       console.error(reason);
     });
