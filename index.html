@@ -30,33 +30,51 @@
 
   <script>
     "use strict";
-
     const sendCommentBtn = document.querySelector(".add-form-button");
     const commentsDataArray = [];
+    
+    function xssValidate(string) {
+      return string
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/'/g, "&#x27;")
+        .replace(/"/g, "&quot;");
+    }
 
     function addLikeListener() {
       const comments = document.querySelectorAll(".comment");
       comments.forEach((el, index) => {
         const commentData = commentsDataArray[index];
-        el.addEventListener("click", () => {
-          if(commentData.isLiked) {
-            commentData.isLiked = false;
-            commentData.count--;
-          } else {
-            commentData.isLiked = true;
-            commentData.count++;
-          }
-
+        const btn = el.querySelector(".like-button");
+        btn.addEventListener("click", (evt) => {
+          evt.stopPropagation();
+          commentData.count += commentData.isLiked ? -1 : 1;
+          commentData.isLiked = !commentData.isLiked;
           renderer(commentsDataArray);
-        })
-      })
+        });
+      });
     }
+
+    function replyListener () {
+      const container = document.querySelector(".comments");
+      container.addEventListener("click", (evt) => {
+        const commentArea = document.querySelector(".add-form-text");
+        const li = (evt.target.tagName.toLowerCase() !== "li") ? evt.target.offsetParent : evt.target;
+        const originCommentIndex = li.getAttribute("data-index");
+        const commentToReply = commentsDataArray[originCommentIndex];
+        commentArea.value = `Ответ @${commentToReply.name} на сообщение: "${commentToReply.text}" \n> `;
+      })
+    };
 
     function renderer(commentsData) {
       const container = document.querySelector(".comments");
+      if (commentsDataArray.length === 0) return [];
 
-      container.innerHTML = commentsDataArray.map( (el, index) => 
-      ` <li class="comment" data-index=${index}>
+      container.innerHTML = commentsDataArray
+        .map(
+          (el, index) =>
+          ` <li class="comment" data-index=${index}>
           <div class="comment-header">
             <div>${el.name}</div>
             <div>${el.date}</div>
@@ -74,13 +92,14 @@
               }"></button>
             </div>
           </div>
-        </li>`
-      ).join("");
+        </li>
+        `)
+        .join("");
 
       addLikeListener();
     }
 
-    function addComment() {
+    function addComment () {
       const nameInput = document.querySelector(".add-form-name");
       const commentArea = document.querySelector(".add-form-text");
       const date = new Date().toLocaleDateString("ru-RU", {
@@ -91,11 +110,11 @@
         minute: "2-digit",
       });
       const formattedDate = date.split(",").join(" ");
-      const userName = nameInput.value;
-      const commentText = commentArea.value;
+      const userName = xssValidate(nameInput.value);
+      const commentText = xssValidate(commentArea.value);
       if (!userName || !commentText) {
         alert("Поля имени и комментария должны быть заполнены.");
-        return 0;
+        return null;
       }
 
       const commentData = {
@@ -113,6 +132,7 @@
     }
 
     sendCommentBtn.addEventListener("click", addComment);
-    renderer(commentsDataArray)
+    renderer(commentsDataArray);
+    replyListener();
   </script>
 </html>
