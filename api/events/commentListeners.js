@@ -23,13 +23,22 @@ export function addComment(fnRender, commentsDataArr) {
     isLiked: false,
   };
 
-  postComment(commentData).then(() => changeStateFormBtn(false, 'Написать'));
   const changeStateFormBtn = disabledOrEnabledBtn('add-comment-button');
   changeStateFormBtn(true, 'Подождите...');
-  commentsDataArr.push(commentData);
-  fnRender(commentsDataArr);
-  nameInput.value = '';
-  commentArea.value = '';
+
+  postComment(commentData)
+    .then(() => {
+      changeStateFormBtn(false, 'Написать');
+      commentsDataArr.push(commentData);
+      fnRender(commentsDataArr);
+      nameInput.value = '';
+      commentArea.value = '';
+    })
+    .catch((reason) => {
+      if (reason instanceof Error) alert(reason.message.split(':')[1]);
+      changeStateFormBtn(false, 'Написать');
+      console.error(reason);
+    });
 }
 
 export function replyListener(commentsDataArr) {
