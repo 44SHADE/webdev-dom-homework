@@ -13,7 +13,7 @@ export function getComments() {
 export function postComment(comment) {
   return fetch('https://wedev-api.sky.pro/api/v1/alex-khor/comments', {
     method: 'POST',
-    body: JSON.stringify(comment),
+    body: JSON.stringify({ ...comment, forceError: true }),
   }).then((response) => {
     if (postStatusError.has(response.status))
       throw postStatusError.get(response.status);

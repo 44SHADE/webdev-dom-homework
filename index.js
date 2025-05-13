@@ -17,7 +17,6 @@ getComments()
         date: formattingDate(comment.date),
         count: comment.likes,
         isLiked: comment.isLiked,
-        forceError: true,
       };
     });
 
