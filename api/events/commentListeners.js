@@ -1,4 +1,5 @@
 import { postComment } from '../services/client-api/comments/fetchComments.js';
+import { disabledOrEnabledBtn } from '../utils/disabledOrEnabledBtn.js';
 import { formattingDate } from '../utils/formattingDate.js';
 import { xssValidate } from '../utils/xssValidate.js';
 
@@ -22,11 +23,16 @@ export function addComment(fnRender, commentsDataArr) {
     isLiked: false,
   };
 
-  postComment(commentData);
-  commentsDataArr.push(commentData);
-  fnRender(commentsDataArr);
-  nameInput.value = '';
-  commentArea.value = '';
+  const changeStateFormBtn = disabledOrEnabledBtn('add-comment-button');
+  changeStateFormBtn(true, 'Подождите...');
+
+  postComment(commentData).then(() => {
+    changeStateFormBtn(false, 'Написать');
+    commentsDataArr.push(commentData);
+    fnRender(commentsDataArr);
+    nameInput.value = '';
+    commentArea.value = '';
+  });
 }
 
 export function replyListener(commentsDataArr) {
