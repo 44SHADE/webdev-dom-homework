@@ -1,7 +1,7 @@
-import { postStatusError } from '../errorStatusMap.js';
+import { postCommentStatusError } from '../errorStatusMap.js';
 
 export function getComments() {
-  return fetch('https://wedev-api.sky.pro/api/v1/alex-khor/comments', {
+  return fetch('https://wedev-api.sky.pro/api/v2/alex-khor/comments', {
     method: 'GET',
   }).then((response) => {
     if (response.status !== 200)
@@ -11,12 +11,17 @@ export function getComments() {
 }
 
 export function postComment(comment) {
-  return fetch('https://wedev-api.sky.pro/api/v1/alex-khor/comments', {
+  const auth =
+    'Bearer ' + ('token' in localStorage ? localStorage.getItem('token') : '');
+  return fetch('https://wedev-api.sky.pro/api/v2/alex-khor/comments', {
     method: 'POST',
     body: JSON.stringify({ ...comment, forceError: true }),
+    headers: {
+      Authorization: auth,
+    },
   }).then((response) => {
-    if (postStatusError.has(response.status))
-      throw postStatusError.get(response.status);
+    if (postCommentStatusError.has(response.status))
+      throw postCommentStatusError.get(response.status);
     return response.json();
   });
 }
