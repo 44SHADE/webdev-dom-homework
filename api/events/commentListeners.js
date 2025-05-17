@@ -1,12 +1,14 @@
+import { commentsDataArray } from '../data/commentsData.js';
 import { postComment } from '../services/client-api/comments/fetchComments.js';
+import { loginPageRenderer } from '../services/client-api/render/_loginPageRenderer.js';
+import { commentsRenderer } from '../services/client-api/render/commentsRenderer.js';
 import { disabledOrEnabledBtn } from '../utils/disabledOrEnabledBtn.js';
 import { formattingDate } from '../utils/formattingDate.js';
 import { xssValidate } from '../utils/xssValidate.js';
 
-const nameInput = document.querySelector('.add-form-name');
-const commentArea = document.querySelector('.add-form-text');
-
 export function addComment(fnRender, commentsDataArr) {
+  const nameInput = document.querySelector('.add-form-name');
+  const commentArea = document.querySelector('.add-form-text');
   const date = formattingDate();
   const userName = xssValidate(nameInput.value);
   const commentText = xssValidate(commentArea.value);
@@ -45,8 +47,9 @@ export function addComment(fnRender, commentsDataArr) {
     });
 }
 
-export function replyListener(commentsDataArr) {
+function replyListener(commentsDataArr) {
   const container = document.querySelector('.comments');
+  const commentArea = document.querySelector('.add-form-text');
   container.addEventListener('click', (evt) => {
     const li =
       evt.target.tagName.toLowerCase() !== 'li'
@@ -56,4 +59,21 @@ export function replyListener(commentsDataArr) {
     const commentToReply = commentsDataArr[originCommentIndex];
     commentArea.value = `Ответ @${commentToReply.name} на сообщение: "${commentToReply.text}" \n> `;
   });
+}
+
+export function commentsListenersInit() {
+  const sendCommentBtn = document.querySelector('.add-form-button');
+  sendCommentBtn.addEventListener(
+    'click',
+    addComment.bind(null, commentsRenderer, commentsDataArray),
+  );
+  const siginLink = document.querySelector('.signin-link');
+  siginLink.addEventListener('click', () => {
+    loginPageRenderer();
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  });
+
+  replyListener(commentsDataArray);
+  commentsRenderer(commentsDataArray);
 }

@@ -1,4 +1,4 @@
-export function renderer(commentsData) {
+export function commentsRenderer(commentsData) {
   const container = document.querySelector('.comments');
   if (commentsData.length === 0) return [];
 
@@ -36,7 +36,7 @@ export function renderer(commentsData) {
       evt.stopPropagation();
       commentData.count += commentData.isLiked ? -1 : 1;
       commentData.isLiked = !commentData.isLiked;
-      renderer(commentsData);
+      commentsRenderer(commentsData);
     });
   });
 }
