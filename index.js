@@ -5,7 +5,6 @@ import { renderer } from './api/utils/commentsRenderer.js';
 import { commentsDataArray } from './api/data/commentsData.js';
 import { formattingDate } from './api/utils/formattingDate.js';
 import { getComments } from './api/services/client-api/comments/fetchComments.js';
-import { delay } from './api/utils/delay.js';
 import { disabledOrEnabledBtn } from './api/utils/disabledOrEnabledBtn.js';
 import { createLoaderText } from './api/utils/createLoaderText.js';
 
@@ -22,12 +21,16 @@ getComments()
     });
 
     commentsDataArray.push(...res);
-    return delay(2000);
-  })
-  .then(() => {
     changeStateFormBtn(false, 'Написать');
     loaderTextEl.remove();
-    renderer(commentsDataArray);
+    renderer(res);
+  })
+  .catch((reason) => {
+    if (reason instanceof Error)
+      alert(
+        'Не удалось получить комментарии, попробуйте перезагрузить страницу',
+      );
+    console.error(reason);
   });
 
 const loaderTextEl = createLoaderText(
