@@ -5,9 +5,8 @@ export function signUp(user) {
     method: 'POST',
     body: JSON.stringify(user),
   }).then((response) => {
-    console.log('first res: ', response.status);
     if (postSignUpStatusError.has(response.status)) {
-      throw postSignUpStatusError(response.status);
+      throw postSignUpStatusError.get(response.status);
     }
     return response.json();
   });

@@ -24,7 +24,7 @@ export const postSignUpStatusError = new Map();
 postSignUpStatusError.set(
   400,
   new Error(
-    'Bad Request Error - Status - 400:Такой пользователь уже существует',
+    'Bad Request Error - Status - 400:Такой пользователь уже существует или вы не ввели данные',
   ),
 );
 
