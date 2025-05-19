@@ -1,4 +1,4 @@
-import { signupListenersInit } from '../../../events/sinupListeners.js';
+import { signupListenersInit } from '../../events/signupListeners.js';
 
 export function signupPageRenderer() {
   const container = document.querySelector('#app');

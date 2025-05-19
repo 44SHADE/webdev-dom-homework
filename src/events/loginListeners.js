@@ -1,6 +1,6 @@
-import { login } from '../services/client-api/auth/fetchLogin.js';
-import { commentsPageRenderer } from '../services/client-api/render/_commentPageRenderer.js';
-import { signupPageRenderer } from '../services/client-api/render/_signupPageRenderer.js';
+import { login } from '../api/auth/fetchLogin.js';
+import { commentsPageRenderer } from '../services/render/_commentPageRenderer.js';
+import { signupPageRenderer } from '../services/render/_signupPageRenderer.js';
 import { xssValidate } from '../utils/xssValidate.js';
 
 export function loginListenersInit() {

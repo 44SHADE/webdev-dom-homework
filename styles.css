@@ -96,6 +96,10 @@ body {
   flex-direction: column;
 }
 
+.-add-form-hidden {
+  display: none;
+}
+
 .add-form-name,
 .add-form-text {
   font-size: 16px;

@@ -32,11 +32,16 @@ export function commentsRenderer(commentsData) {
   comments.forEach((el, index) => {
     const commentData = commentsData[index];
     const btn = el.querySelector('.like-button');
+    const isLogin = 'token' in localStorage;
     btn.addEventListener('click', (evt) => {
-      evt.stopPropagation();
-      commentData.count += commentData.isLiked ? -1 : 1;
-      commentData.isLiked = !commentData.isLiked;
-      commentsRenderer(commentsData);
+      if (isLogin) {
+        evt.stopPropagation();
+        commentData.count += commentData.isLiked ? -1 : 1;
+        commentData.isLiked = !commentData.isLiked;
+        commentsRenderer(commentsData);
+      } else {
+        alert('Сначала авторизуйтесь!');
+      }
     });
   });
 }

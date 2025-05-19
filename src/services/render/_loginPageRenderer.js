@@ -1,4 +1,4 @@
-import { loginListenersInit } from '../../../events/loginListeners.js';
+import { loginListenersInit } from '../../events/loginListeners.js';
 
 export function loginPageRenderer() {
   const container = document.querySelector('#app');

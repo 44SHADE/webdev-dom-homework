@@ -1,12 +1,12 @@
 'use strict';
 
-import { commentsRenderer } from './api/services/client-api/render/commentsRenderer.js';
-import { commentsDataArray } from './api/data/commentsData.js';
-import { formattingDate } from './api/utils/formattingDate.js';
-import { getComments } from './api/services/client-api/comments/fetchComments.js';
-import { disabledOrEnabledBtn } from './api/utils/disabledOrEnabledBtn.js';
-import { createLoaderText } from './api/utils/createLoaderText.js';
-import { commentsPageRenderer } from './api/services/client-api/render/_commentPageRenderer.js';
+import { commentsRenderer } from './src/services/render/commentsRenderer.js';
+import { commentsDataArray } from './src/data/commentsData.js';
+import { formattingDate } from './src/utils/formattingDate.js';
+import { getComments } from './src/api/comments/fetchComments.js';
+import { disabledOrEnabledBtn } from './src/utils/disabledOrEnabledBtn.js';
+import { createLoaderText } from './src/utils/createLoaderText.js';
+import { commentsPageRenderer } from './src/services/render/_commentPageRenderer.js';
 
 commentsPageRenderer();
 const loaderTextEl = createLoaderText(

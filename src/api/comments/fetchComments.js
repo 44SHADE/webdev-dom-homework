@@ -1,4 +1,4 @@
-import { postCommentStatusError } from '../errorStatusMap.js';
+import { postCommentStatusError } from '../../services/errorStatusMap.js';
 
 export function getComments() {
   return fetch('https://wedev-api.sky.pro/api/v2/alex-khor/comments', {

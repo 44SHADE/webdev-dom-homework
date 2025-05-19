@@ -1,5 +1,5 @@
-import { signUp } from '../services/client-api/auth/fetchSignUp.js';
-import { commentsPageRenderer } from '../services/client-api/render/_commentPageRenderer.js';
+import { signUp } from '../api/auth/fetchSignUp.js';
+import { commentsPageRenderer } from '../services/render/_commentPageRenderer.js';
 import { xssValidate } from '../utils/xssValidate.js';
 
 export function signupListenersInit() {

@@ -1,7 +1,7 @@
 import { commentsDataArray } from '../data/commentsData.js';
-import { postComment } from '../services/client-api/comments/fetchComments.js';
-import { loginPageRenderer } from '../services/client-api/render/_loginPageRenderer.js';
-import { commentsRenderer } from '../services/client-api/render/commentsRenderer.js';
+import { postComment } from '../api/comments/fetchComments.js';
+import { loginPageRenderer } from '../services/render/_loginPageRenderer.js';
+import { commentsRenderer } from '../services/render/commentsRenderer.js';
 import { disabledOrEnabledBtn } from '../utils/disabledOrEnabledBtn.js';
 import { formattingDate } from '../utils/formattingDate.js';
 import { xssValidate } from '../utils/xssValidate.js';
@@ -13,7 +13,7 @@ export function addComment(fnRender, commentsDataArr) {
   const userName = xssValidate(nameInput.value);
   const commentText = xssValidate(commentArea.value);
   if (!userName || !commentText) {
-    alert('Поля имени и комментария должны быть заполнены.');
+    alert('Нельзя отправить пустой комментарий!');
     return null;
   }
 
@@ -67,8 +67,8 @@ export function commentsListenersInit() {
     'click',
     addComment.bind(null, commentsRenderer, commentsDataArray),
   );
-  const siginLink = document.querySelector('.signin-link');
-  siginLink.addEventListener('click', () => {
+  const signinLink = document.querySelector('.signin-link');
+  signinLink.addEventListener('click', () => {
     loginPageRenderer();
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
