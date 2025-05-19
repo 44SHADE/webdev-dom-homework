@@ -26,7 +26,7 @@ export function commentsPageRenderer() {
             <button class="button add-form-button" id="add-comment-button">Написать</button>
           </div>
         </div>
-        <a class="signin-link">Что-бы добавить комментарий, авторизуйтесь</a>
+        <a class="signin-link">Чтобы добавить комментарий, авторизуйтесь</a>
       </div>`;
 
   commentsListenersInit();
