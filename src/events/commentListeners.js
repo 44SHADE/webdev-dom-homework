@@ -33,7 +33,6 @@ export function addComment(fnRender, commentsDataArr) {
       changeStateFormBtn(false, 'Написать');
       commentsDataArr.push(commentData);
       fnRender(commentsDataArr);
-      nameInput.value = '';
       commentArea.value = '';
     })
     .catch((reason) => {
