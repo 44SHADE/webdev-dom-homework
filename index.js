@@ -1,12 +1,22 @@
 'use strict';
 
-import { addComment, replyListener } from './api/events/commentListeners.js';
-import { renderer } from './api/utils/commentsRenderer.js';
-import { commentsDataArray } from './api/data/commentsData.js';
-import { formattingDate } from './api/utils/formattingDate.js';
-import { getComments } from './api/services/client-api/comments/fetchComments.js';
-import { disabledOrEnabledBtn } from './api/utils/disabledOrEnabledBtn.js';
-import { createLoaderText } from './api/utils/createLoaderText.js';
+import { commentsRenderer } from './src/services/render/commentsRenderer.js';
+import { commentsDataArray } from './src/data/commentsData.js';
+import { formattingDate } from './src/utils/formattingDate.js';
+import { getComments } from './src/api/comments/fetchComments.js';
+import { disabledOrEnabledBtn } from './src/utils/disabledOrEnabledBtn.js';
+import { createLoaderText } from './src/utils/createLoaderText.js';
+import { commentsPageRenderer } from './src/services/render/_commentPageRenderer.js';
+
+commentsPageRenderer();
+const loaderTextEl = createLoaderText(
+  'container-comments',
+  'p',
+  'add-comment-form',
+  'Идет загрузка комментариев подождите...',
+);
+const changeStateFormBtn = disabledOrEnabledBtn('add-comment-button');
+changeStateFormBtn(true, "Don't touch!");
 
 getComments()
   .then((data) => {
@@ -23,7 +33,7 @@ getComments()
     commentsDataArray.push(...res);
     changeStateFormBtn(false, 'Написать');
     loaderTextEl.remove();
-    renderer(res);
+    commentsRenderer(res);
   })
   .catch((reason) => {
     if (reason instanceof Error)
@@ -32,20 +42,3 @@ getComments()
       );
     console.error(reason);
   });
-
-const loaderTextEl = createLoaderText(
-  'container-comments',
-  'p',
-  'add-comment-form',
-  'Идет загрузка комментариев подождите...',
-);
-const changeStateFormBtn = disabledOrEnabledBtn('add-comment-button');
-changeStateFormBtn(true, "Don't touch!");
-
-const sendCommentBtn = document.querySelector('.add-form-button');
-sendCommentBtn.addEventListener(
-  'click',
-  addComment.bind(null, renderer, commentsDataArray),
-);
-
-replyListener(commentsDataArray);
